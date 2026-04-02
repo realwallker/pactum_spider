@@ -47,8 +47,9 @@ export async function POST() {
       .single();
 
     if (userError || !currentUserData) {
+      console.error("User profile fetch error:", userError);
       return NextResponse.json(
-        { error: "User profile not found" },
+        { error: "User profile not found", details: userError?.message },
         { status: 404 }
       );
     }
@@ -61,11 +62,40 @@ export async function POST() {
       .select("*")
       .neq("id", user.id);
 
-    if (allUsersError || !allUsers) {
+    if (allUsersError) {
+      console.error("Fetch users error:", allUsersError);
       return NextResponse.json(
-        { error: "Error fetching users" },
+        { error: "Error fetching users", details: allUsersError.message },
         { status: 500 }
       );
+    }
+
+    // Si no hay otros usuarios, retornar sin error
+    if (!allUsers || allUsers.length === 0) {
+      return NextResponse.json({
+        message: "No hay otros usuarios para hacer match",
+        total_calculated: 0,
+        new_matches_created: 0,
+        existing_matches: 0,
+        min_threshold: 35,
+        cached: false,
+      });
+    }
+
+    // Filter users with complete profiles (bio + skills + intereses)
+    const validUsers = allUsers.filter(
+      (u) => u.bio && u.skills?.length > 0 && u.intereses?.length > 0
+    );
+
+    if (validUsers.length === 0) {
+      return NextResponse.json({
+        message: "No hay otros usuarios con perfiles completos para hacer match",
+        total_calculated: 0,
+        new_matches_created: 0,
+        existing_matches: 0,
+        min_threshold: 35,
+        cached: false,
+      });
     }
 
     // Calculate matches
@@ -76,7 +106,7 @@ export async function POST() {
       estado: string;
     }> = [];
 
-    for (const otherUser of allUsers) {
+    for (const otherUser of validUsers) {
       const score = calculateMatchScore(
         currentUser,
         otherUser as UserProfile
@@ -84,13 +114,17 @@ export async function POST() {
 
       if (meetsMatchThreshold(score)) {
         // Check if match already exists
-        const { data: existingMatch } = await supabase
+        const { data: existingMatch, error: matchCheckError } = await supabase
           .from("matches")
           .select("id")
           .or(
-            `and(user_a_id.eq.${user.id},user_b_id.eq.${otherUser.id}),and(user_a_id.eq.${otherUser.id},user_b_id.eq.${user.id})`
+            `(user_a_id.eq.${user.id},user_b_id.eq.${otherUser.id}),(user_a_id.eq.${otherUser.id},user_b_id.eq.${user.id})`
           )
           .limit(1);
+
+        if (matchCheckError) {
+          console.error("Match check error:", matchCheckError);
+        }
 
         // Only add if match doesn't already exist
         if (!existingMatch || existingMatch.length === 0) {
@@ -115,7 +149,11 @@ export async function POST() {
       if (insertError) {
         console.error("Error inserting matches:", insertError);
         return NextResponse.json(
-          { error: insertError.message },
+          { 
+            error: "Error creating matches", 
+            details: insertError.message,
+            code: insertError.code 
+          },
           { status: 500 }
         );
       }
@@ -127,7 +165,7 @@ export async function POST() {
       message: "Matches calculados y guardados",
       total_calculated: matchesToCreate.length,
       new_matches_created: newMatchesCreated,
-      existing_matches: allUsers.length - matchesToCreate.length,
+      existing_matches: (validUsers?.length || 0) - matchesToCreate.length,
       min_threshold: 35,
       cached: false,
     };
@@ -142,7 +180,10 @@ export async function POST() {
   } catch (error) {
     console.error("Error calculating matches:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { 
+        error: "Internal server error", 
+        details: error instanceof Error ? error.message : "Unknown error" 
+      },
       { status: 500 }
     );
   }
