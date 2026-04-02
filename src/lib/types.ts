@@ -4,6 +4,7 @@ export type ProjectStatus = "activo" | "pausado";
 export type RequestStatus = "pendiente" | "aprobada" | "rechazada";
 export type MatchStatus = "pendiente" | "aceptado" | "rechazado";
 export type MessageType = "texto" | "archivo";
+export type Availability = "disponible" | "parcial" | "no_disponible";
 
 export interface UserProfile {
   id: string;
@@ -12,6 +13,8 @@ export interface UserProfile {
   foto: string | null;
   ubicacion: string | null;
   bio: string | null;
+  linkedin_url: string | null;
+  availability: Availability;
   skills: string[];
   intereses: string[];
   plan: Plan;
@@ -24,6 +27,7 @@ export interface Project {
   nombre: string;
   descripcion: string | null;
   sector: string | null;
+  location: string | null;
   etapa: ProjectStage;
   estado: ProjectStatus;
   created_at: string;
@@ -40,6 +44,19 @@ export interface Vacancy {
   estado: "abierta" | "cerrada";
 }
 
+export interface JoinRequest {
+  id: string;
+  user_id: string;
+  project_id: string;
+  vacancy_id: string | null;
+  mensaje: string;
+  estado: RequestStatus;
+  created_at: string;
+  user?: UserProfile;
+  project?: Project;
+  vacancy?: Vacancy;
+}
+
 export interface Match {
   id: string;
   user_a_id: string;
@@ -48,4 +65,29 @@ export interface Match {
   estado: MatchStatus;
   created_at: string;
   other_user?: UserProfile;
+}
+
+export interface MatchRoom {
+  id: string;
+  match_id: string;
+  created_at: string;
+}
+
+export interface Message {
+  id: string;
+  room_id: string;
+  sender_id: string;
+  content: string;
+  type: MessageType;
+  created_at: string;
+}
+
+export interface Subscription {
+  id: string;
+  user_id: string;
+  plan: Plan;
+  stripe_customer_id: string;
+  stripe_subscription_id: string;
+  status: "active" | "canceled" | "past_due";
+  current_period_end: string;
 }

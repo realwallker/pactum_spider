@@ -34,11 +34,18 @@ export async function updateSession(request: NextRequest) {
     "/dashboard",
     "/matches",
     "/projects/new",
+    "/projects/[id]/edit",
+    "/join-requests",
+    "/my-applications",
+    "/perfil/edit",
     "/onboarding",
   ];
-  const isProtected = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route),
-  );
+  const isProtected = protectedRoutes.some((route) => {
+    const routePattern = route
+      .replace(/\[.*?\]/g, "[^/]+")
+      .replace(/\//g, "\\/");
+    return new RegExp(`^${routePattern}(/.*)?$`).test(request.nextUrl.pathname);
+  });
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
