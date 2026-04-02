@@ -69,20 +69,35 @@ export default function DirectorioClient({ projects }: { projects: Project[] }) 
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        input { background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:10px; padding:11px 16px; color:${C.text}; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:border 0.2s; width:100%; }
-        input:focus { border-color:${C.cyan}; }
+        * { margin:0; padding:0; box-sizing:border-box; word-wrap: break-word; overflow-wrap: break-word; }
+        input { background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:10px; padding:clamp(10px, 2vw, 11px) clamp(14px, 3vw, 16px); color:${C.text}; font-size:clamp(13px, 2vw, 14px); font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:all 0.2s; width:100%; max-width:100%; word-wrap: break-word; }
+        input:focus { border-color:${C.cyan}; box-shadow:0 0 0 3px rgba(6,214,160,0.1); }
         input::placeholder { color:${C.dimmed}; }
-        .filter-chip { padding:7px 16px; border-radius:100px; border:1px solid ${C.border}; background:transparent; color:${C.muted}; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.15s; font-family:'Plus Jakarta Sans',sans-serif; white-space:nowrap; }
+        .filter-chip { padding:clamp(6px, 1.5vw, 7px) clamp(12px, 2vw, 16px); border-radius:100px; border:1px solid ${C.border}; background:transparent; color:${C.muted}; font-size:clamp(12px, 1.5vw, 13px); font-weight:600; cursor:pointer; transition:all 0.15s; font-family:'Plus Jakarta Sans',sans-serif; white-space: normal; word-wrap: break-word; min-height: 32px; }
         .filter-chip:hover { border-color:${C.borderHover}; color:${C.text}; }
         .filter-chip.active { background:${C.cyanDim}; border-color:rgba(6,214,160,0.35); color:${C.cyan}; }
-        .project-card { background:${C.card}; border:1px solid ${C.border}; border-radius:16px; padding:24px; transition:all 0.25s; cursor:pointer; display:flex; flex-direction:column; gap:0; }
+        .project-card { background:${C.card}; border:1px solid ${C.border}; border-radius:16px; padding:clamp(16px, 3vw, 24px); transition:all 0.25s; cursor:pointer; display:flex; flex-direction:column; gap:0; word-wrap: break-word; }
         .project-card:hover { background:${C.cardHover}; border-color:${C.borderHover}; transform:translateY(-3px); }
-        .vacancy-tag { background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:100px; padding:4px 12px; font-size:12px; color:${C.muted}; font-weight:600; }
-        .btn-apply { background:${C.cyan}; color:#020A08; font-weight:700; border:none; cursor:pointer; padding:10px 20px; border-radius:8px; font-size:13px; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.2s; white-space:nowrap; }
+        .vacancy-tag { background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:100px; padding:clamp(3px, 1vw, 4px) clamp(8px, 2vw, 12px); font-size:clamp(11px, 1.5vw, 12px); color:${C.muted}; font-weight:600; word-wrap: break-word; white-space: normal; }
+        .btn-apply { background:${C.cyan}; color:#020A08; font-weight:700; border:none; cursor:pointer; padding:clamp(8px, 2vw, 10px) clamp(12px, 3vw, 20px); border-radius:8px; font-size:clamp(12px, 1.5vw, 13px); font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.2s; white-space: normal; min-height: 40px; }
         .btn-apply:hover { background:#04EFB2; }
-        .nav-link { color:${C.muted}; text-decoration:none; font-size:14px; font-weight:500; transition:color 0.2s; cursor:pointer; }
+        .nav-link { color:${C.muted}; text-decoration:none; font-size:clamp(12px, 2vw, 14px); font-weight:500; transition:color 0.2s; cursor:pointer; word-wrap: break-word; }
         .nav-link:hover { color:${C.text}; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(260px, 90vw, 320px), 1fr)); gap: clamp(14px, 3vw, 20px); width: 100%; }
+        @media (max-width: 768px) {
+          .main-container { padding: clamp(24px, 5vw, 40px) clamp(14px, 3vw, 20px) !important; }
+          .filter-group { overflow-x: auto; overflow-y: hidden; padding: 10px 0; }
+          .filter-group::-webkit-scrollbar { height: 6px; }
+          .filter-group::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 3px; }
+          .projects-grid { gap: clamp(12px, 2vw, 16px) !important; }
+        }
+        @media (max-width: 480px) {
+          .main-container { padding: clamp(16px, 4vw, 24px) clamp(12px, 2vw, 16px) !important; }
+          .filter-chip { min-height: 36px; padding: clamp(6px, 1.5vw, 7px) clamp(10px, 2vw, 12px) !important; font-size: clamp(11px, 1.5vw, 12px) !important; }
+          .btn-apply { padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2vw, 16px) !important; font-size: clamp(11px, 1.5vw, 12px) !important; min-height: 36px; }
+          .project-card { padding: clamp(12px, 2.5vw, 16px) !important; gap: 8px !important; }
+          .projects-grid { grid-template-columns: repeat(auto-fill, minmax(clamp(240px, 100%, 280px), 1fr)) !important; }
+        }
       `}</style>
 
       {/* NAV */}
@@ -157,7 +172,7 @@ export default function DirectorioClient({ projects }: { projects: Project[] }) 
         </div>
       </nav>
 
-      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "48px 32px" }}>
+      <div className="main-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(32px, 6vw, 48px) clamp(16px, 4vw, 32px)", width: "100%", overflow: "hidden" }}>
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
           <p
@@ -301,6 +316,7 @@ export default function DirectorioClient({ projects }: { projects: Project[] }) 
           </div>
         ) : (
           <div
+            className="projects-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))",

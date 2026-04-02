@@ -3,3 +3,103 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  font-size: clamp(13px, 2vw, 16px);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #F1F5F9;
+  background: #05060F;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+button, a {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  word-wrap: break-word;
+}
+
+textarea, input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input, textarea {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+span {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: clamp(13px, 1.8vw, 15px);
+  }
+  
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: clamp(12px, 1.5vw, 14px);
+  }
+  
+  body {
+    font-size: 13px;
+  }
+  
+  button {
+    min-height: 40px;
+    min-width: 40px;
+    padding: clamp(8px, 1.5vw, 10px) clamp(10px, 2.5vw, 16px);
+  }
+}
+

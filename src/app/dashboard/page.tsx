@@ -55,11 +55,12 @@ export default async function DashboardPage() {
         .nav-link {
           color: #94A3B8;
           text-decoration: none;
-          font-size: 14px;
+          font-size: clamp(12px, 2vw, 14px);
           font-weight: 500;
-          padding: 6px 12px;
+          padding: clamp(6px, 1vw, 8px) clamp(10px, 2vw, 12px);
           border-radius: 8px;
           transition: all 0.2s;
+          word-wrap: break-word;
         }
         .nav-link:hover {
           color: #F1F5F9;
@@ -69,8 +70,10 @@ export default async function DashboardPage() {
           background: rgba(255,255,255,0.04);
           border: 1px solid rgba(255,255,255,0.08);
           border-radius: 16px;
-          padding: 24px 28px;
+          padding: clamp(16px, 3vw, 24px) clamp(18px, 4vw, 28px);
           transition: all 0.2s;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         .stat-card:hover {
           border-color: rgba(255,255,255,0.14);
@@ -80,11 +83,13 @@ export default async function DashboardPage() {
           background: rgba(255,255,255,0.04);
           border: 1px solid rgba(255,255,255,0.08);
           border-radius: 16px;
-          padding: 24px;
+          padding: clamp(14px, 3vw, 24px);
           text-decoration: none;
           display: block;
           transition: all 0.25s;
           cursor: pointer;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         .action-card:hover {
           background: rgba(255,255,255,0.07);
@@ -95,30 +100,47 @@ export default async function DashboardPage() {
           background: rgba(6,214,160,0.12);
           border: 1px solid rgba(6,214,160,0.2);
           border-radius: 100px;
-          padding: 4px 14px;
-          font-size: 12px;
+          padding: clamp(3px, 1vw, 4px) clamp(10px, 2vw, 14px);
+          font-size: clamp(11px, 1.5vw, 12px);
           color: #06D6A0;
           font-weight: 600;
+          word-wrap: break-word;
+          white-space: normal;
         }
         .interest-badge {
           background: rgba(139,92,246,0.12);
           border: 1px solid rgba(139,92,246,0.2);
           border-radius: 100px;
-          padding: 4px 14px;
-          font-size: 12px;
+          padding: clamp(3px, 1vw, 4px) clamp(10px, 2vw, 14px);
+          font-size: clamp(11px, 1.5vw, 12px);
           color: #8B5CF6;
           font-weight: 600;
+          word-wrap: break-word;
+          white-space: normal;
         }
         .plan-badge {
           background: rgba(251,191,36,0.12);
           border: 1px solid rgba(251,191,36,0.25);
           border-radius: 100px;
-          padding: 3px 12px;
-          font-size: 11px;
+          padding: clamp(2px, 0.8vw, 3px) clamp(8px, 2vw, 12px);
+          font-size: clamp(10px, 1.2vw, 11px);
           color: #FBBF24;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.06em;
+          word-wrap: break-word;
+          white-space: normal;
+        }
+        @media (max-width: 768px) {
+          .stat-card { padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px) !important; }
+          .action-card { padding: clamp(12px, 2.5vw, 18px) !important; }
+        }
+        @media (max-width: 480px) {
+          .stat-card { padding: clamp(12px, 2vw, 16px) clamp(14px, 2.5vw, 18px) !important; }
+          .action-card { padding: clamp(10px, 2vw, 14px) !important; }
+          .skill-badge { font-size: clamp(10px, 1.3vw, 11px) !important; }
+          .interest-badge { font-size: clamp(10px, 1.3vw, 11px) !important; }
+          .plan-badge { font-size: clamp(9px, 1vw, 10px) !important; }
         }
       `}</style>
 
@@ -243,7 +265,7 @@ export default async function DashboardPage() {
       </nav>
 
       {/* MAIN */}
-      <main style={{ maxWidth: 1120, margin: "0 auto", padding: "52px 32px" }}>
+      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(40px, 6vw, 52px) clamp(16px, 4vw, 32px)", width: "100%", overflow: "hidden" }}>
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
           <h1

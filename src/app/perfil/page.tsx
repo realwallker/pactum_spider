@@ -46,37 +46,63 @@ export default async function PerfilPage() {
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; word-wrap: break-word; overflow-wrap: break-word; }
         .skill-badge {
           background: ${C.cyanDim};
           border: 1px solid rgba(6,214,160,0.2);
           border-radius: 100px;
-          padding: 4px 14px;
-          font-size: 12px;
+          padding: clamp(3px, 1vw, 4px) clamp(10px, 2vw, 14px);
+          font-size: clamp(11px, 1.5vw, 12px);
           color: ${C.cyan};
           font-weight: 600;
+          word-wrap: break-word;
+          white-space: normal;
         }
         .interest-badge {
           background: rgba(139,92,246,0.12);
           border: 1px solid rgba(139,92,246,0.2);
           border-radius: 100px;
-          padding: 4px 14px;
-          font-size: 12px;
+          padding: clamp(3px, 1vw, 4px) clamp(10px, 2vw, 14px);
+          font-size: clamp(11px, 1.5vw, 12px);
           color: #8B5CF6;
           font-weight: 600;
+          word-wrap: break-word;
+          white-space: normal;
+        }
+        .profile-info-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: clamp(12px, 3vw, 16px);
         }
         button {
           transition: all 0.2s;
+          min-height: 40px;
         }
         button:hover {
           opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+          .profile-info-grid {
+            grid-template-columns: 1fr !important;
+            gap: clamp(10px, 2vw, 12px) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .profile-info-grid {
+            gap: clamp(8px, 1.5vw, 10px) !important;
+          }
+          button {
+            min-height: 36px;
+            padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 16px) !important;
+            font-size: clamp(12px, 1.5vw, 13px) !important;
+          }
         }
       `}</style>
 
       <PerfilNav />
 
       {/* MAIN */}
-      <main style={{ maxWidth: 800, margin: "0 auto", padding: "48px 32px" }}>
+      <main style={{ maxWidth: 800, margin: "0 auto", padding: "clamp(32px, 6vw, 48px) clamp(16px, 4vw, 32px)", width: "100%", overflow: "hidden" }}>
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
           <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: C.cyan, marginBottom: 12 }}>
@@ -150,19 +176,19 @@ export default async function PerfilPage() {
 
           {/* Info Grid */}
           <div
+            className="profile-info-grid"
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 16,
               marginBottom: 24,
             }}
           >
             <div
               style={{
-                padding: 16,
+                padding: "clamp(12px, 2.5vw, 16px)",
                 background: C.surface,
                 borderRadius: 12,
                 border: `1px solid ${C.border}`,
+                word-wrap: "break-word",
+                overflow-wrap: "break-word",
               }}
             >
               <p style={{ fontSize: 11, color: C.dimmed, marginBottom: 4, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
@@ -175,10 +201,12 @@ export default async function PerfilPage() {
 
             <div
               style={{
-                padding: 16,
+                padding: "clamp(12px, 2.5vw, 16px)",
                 background: C.surface,
                 borderRadius: 12,
                 border: `1px solid ${C.border}`,
+                word-wrap: "break-word",
+                overflow-wrap: "break-word",
               }}
             >
               <p style={{ fontSize: 11, color: C.dimmed, marginBottom: 4, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
@@ -276,15 +304,16 @@ export default async function PerfilPage() {
             <button
               style={{
                 width: "100%",
-                padding: 12,
+                padding: "clamp(10px, 2vw, 12px) clamp(16px, 3vw, 24px)",
                 borderRadius: 10,
                 border: "none",
                 background: C.cyan,
                 color: "#020A08",
-                fontSize: 16,
+                fontSize: "clamp(13px, 2vw, 16px)",
                 fontWeight: 700,
                 cursor: "pointer",
                 transition: "all 0.2s",
+                minHeight: "40px",
               }}
             >
               ✏️ Editar Perfil
@@ -298,28 +327,29 @@ export default async function PerfilPage() {
             background: "linear-gradient(135deg,rgba(6,214,160,0.08),rgba(139,92,246,0.08))",
             border: `1px solid ${C.border}`,
             borderRadius: 16,
-            padding: 24,
+            padding: "clamp(16px, 3vw, 24px)",
             textAlign: "center",
           }}
         >
-          <p style={{ fontSize: 13, color: C.muted, marginBottom: 8, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+          <p style={{ fontSize: "clamp(11px, 1.5vw, 13px)", color: C.muted, marginBottom: 8, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>
             ¿Listo para encontrar socios?
           </p>
-          <p style={{ fontSize: 18, color: C.text, marginBottom: 16, fontWeight: 700 }}>
+          <p style={{ fontSize: "clamp(14px, 2.5vw, 18px)", color: C.text, marginBottom: 16, fontWeight: 700 }}>
             Descubre perfiles complementarios con nuestro algoritmo
           </p>
           <Link href="/matches" style={{ textDecoration: "none" }}>
             <button
               style={{
-                padding: "12px 24px",
+                padding: "clamp(10px, 2vw, 12px) clamp(16px, 3vw, 24px)",
                 borderRadius: 10,
                 border: "none",
                 background: C.cyan,
                 color: "#020A08",
-                fontSize: 15,
+                fontSize: "clamp(13px, 2vw, 15px)",
                 fontWeight: 700,
                 cursor: "pointer",
                 transition: "all 0.2s",
+                minHeight: "40px",
               }}
             >
               Ver mis matches →

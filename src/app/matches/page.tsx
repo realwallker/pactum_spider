@@ -113,19 +113,31 @@ export default function MatchesPage() {
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .nav-link { color:${C.muted}; text-decoration:none; font-size:14px; font-weight:500; transition:color 0.2s; cursor:pointer; }
+        * { margin:0; padding:0; box-sizing:border-box; word-wrap: break-word; overflow-wrap: break-word; }
+        .nav-link { color:${C.muted}; text-decoration:none; font-size:clamp(12px, 2vw, 14px); font-weight:500; transition:color 0.2s; cursor:pointer; word-wrap: break-word; }
         .nav-link:hover { color:${C.text}; }
-        .match-card { background:${C.card}; border:1px solid ${C.border}; border-radius:14px; padding:20px; transition:all 0.3s; }
+        .match-card { background:${C.card}; border:1px solid ${C.border}; border-radius:14px; padding:clamp(14px, 3vw, 20px); transition:all 0.3s; word-wrap: break-word; overflow-wrap: break-word; }
         .match-card:hover { background:${C.cardHover}; border-color:${C.borderHover}; transform:translateY(-2px); }
-        .score-badge { width:60px; height:60px; border-radius:50%; background:${C.cyanDim}; color:${C.cyan}; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:18px; flex-shrink:0; border:2px solid ${C.cyan}; }
-        .btn { padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.2s; font-family:'Plus Jakarta Sans',sans-serif; }
+        .score-badge { width:clamp(50px, 10vw, 60px); height:clamp(50px, 10vw, 60px); border-radius:50%; background:${C.cyanDim}; color:${C.cyan}; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:clamp(14px, 2vw, 18px); flex-shrink:0; border:2px solid ${C.cyan}; }
+        .btn { padding:clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 16px); border-radius:8px; border:none; cursor:pointer; font-size:clamp(12px, 1.5vw, 13px); font-weight:600; transition:all 0.2s; font-family:'Plus Jakarta Sans',sans-serif; min-height: 40px; word-wrap: break-word; }
         .btn-primary { background:${C.cyan}; color:#020A08; }
         .btn-primary:hover { background:#04EFB2; }
         .btn-ghost { background:transparent; border:1px solid ${C.border}; color:${C.text}; }
         .btn-ghost:hover { border-color:${C.borderHover}; background:rgba(255,255,255,0.05); }
-        .filter-chip { padding:8px 16px; border-radius:100px; border:1px solid ${C.border}; background:transparent; color:${C.muted}; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.15s; }
+        .filter-chip { padding:clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 16px); border-radius:100px; border:1px solid ${C.border}; background:transparent; color:${C.muted}; font-size:clamp(12px, 1.5vw, 13px); font-weight:600; cursor:pointer; transition:all 0.15s; word-wrap: break-word; white-space: normal; min-height: 36px; }
         .filter-chip.active { background:${C.cyanDim}; border-color:${C.cyan}; color:${C.cyan}; }
+        .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(300px, 90vw, 340px), 1fr)); gap: clamp(14px, 3vw, 20px); width: 100%; }
+        @media (max-width: 768px) {
+          .matches-grid { gap: clamp(12px, 2vw, 16px) !important; grid-template-columns: repeat(auto-fill, minmax(clamp(260px, 100%, 300px), 1fr)) !important; }
+          .match-card { padding: clamp(12px, 2.5vw, 16px) !important; }
+        }
+        @media (max-width: 480px) {
+          .btn { min-height: 36px; padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2vw, 12px) !important; }
+          .filter-chip { min-height: 34px; padding: clamp(5px, 1vw, 6px) clamp(10px, 2vw, 12px) !important; font-size: clamp(11px, 1.5vw, 12px) !important; }
+          .matches-grid { grid-template-columns: 1fr !important; }
+          .match-card { padding: clamp(10px, 2vw, 12px) !important; }
+          .score-badge { width: clamp(40px, 8vw, 50px) !important; height: clamp(40px, 8vw, 50px) !important; font-size: clamp(12px, 1.8vw, 14px) !important; }
+        }
       `}</style>
 
       {/* NAV */}
@@ -167,7 +179,7 @@ export default function MatchesPage() {
         </div>
       </nav>
 
-      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "48px 32px" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(32px, 6vw, 48px) clamp(16px, 4vw, 32px)", width: "100%", overflow: "hidden" }}>
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
           <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: C.cyan, marginBottom: 12 }}>
@@ -231,7 +243,7 @@ export default function MatchesPage() {
 
         {/* Grid */}
         {!loading && matches.length > 0 && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(340px,1fr))", gap: 20 }}>
+          <div className="matches-grid">
             {matches.map((match) => {
               const statusColors: Record<string, { bg: string; color: string }> = {
                 pendiente: { bg: "rgba(251,191,36,0.12)", color: "#FBBF24" },

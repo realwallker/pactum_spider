@@ -98,20 +98,72 @@ export default function ProjectDetailClient({
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        textarea { width:100%; background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:10px; padding:12px 16px; color:${C.text}; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:border 0.2s; resize:none; }
-        textarea:focus { border-color:${C.cyan}; }
+        * { margin:0; padding:0; box-sizing:border-box; word-wrap: break-word; overflow-wrap: break-word; }
+        textarea { width:100%; max-width:100%; background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:10px; padding:clamp(10px, 2vw, 12px) clamp(12px, 3vw, 16px); color:${C.text}; font-size:clamp(13px, 2vw, 14px); font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:all 0.2s; resize:vertical; max-height:300px; min-height:100px; }
+        textarea:focus { border-color:${C.cyan}; box-shadow:0 0 0 3px rgba(6,214,160,0.1); }
         textarea::placeholder { color:${C.dimmed}; }
-        .vacancy-card { background:rgba(255,255,255,0.03); border:1px solid ${C.border}; border-radius:12px; padding:16px 20px; cursor:pointer; transition:all 0.2s; }
-        .vacancy-card:hover { border-color:${C.borderHover}; }
+        .vacancy-card { background:rgba(255,255,255,0.03); border:1px solid ${C.border}; border-radius:12px; padding:clamp(12px, 3vw, 20px); cursor:pointer; transition:all 0.2s; word-wrap: break-word; overflow-wrap: break-word; }
+        .vacancy-card:hover { border-color:${C.borderHover}; background:rgba(255,255,255,0.05); }
         .vacancy-card.selected { border-color:rgba(6,214,160,0.4); background:${C.cyanDim}; }
-        .skill-tag { background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:100px; padding:4px 12px; font-size:12px; color:${C.muted}; font-weight:600; }
+        .skill-tag { background:rgba(255,255,255,0.05); border:1px solid ${C.border}; border-radius:100px; padding:clamp(3px, 1vw, 4px) clamp(8px, 2vw, 12px); font-size:clamp(11px, 1.5vw, 12px); color:${C.muted}; font-weight:600; transition:all 0.2s; word-wrap: break-word; white-space: normal; }
+        .project-container {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(270px, 1fr);
+          gap: clamp(16px, 4vw, 32px);
+          width: 100%;
+        }
+        @media (max-width: 1024px) {
+          .project-container {
+            grid-template-columns: minmax(0, 1fr) minmax(250px, 1fr) !important;
+            gap: clamp(16px, 3vw, 24px) !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .project-container {
+            grid-template-columns: 1fr !important;
+            gap: clamp(12px, 3vw, 20px) !important;
+          }
+          .project-title {
+            font-size: clamp(18px, 5vw, 24px) !important;
+          }
+          .section-card {
+            padding: clamp(14px, 3vw, 20px) !important;
+          }
+          .apply-panel {
+            position: static !important;
+            width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .nav-button {
+            padding: clamp(4px, 1vw, 6px) clamp(8px, 2vw, 10px) !important;
+            font-size: clamp(11px, 1.5vw, 12px) !important;
+            min-width: auto !important;
+            min-height: 36px !important;
+          }
+          .project-title {
+            font-size: clamp(16px, 4vw, 20px) !important;
+          }
+          .founder-avatar {
+            width: clamp(36px, 8vw, 48px) !important;
+            height: clamp(36px, 8vw, 48px) !important;
+            font-size: clamp(16px, 4vw, 20px) !important;
+          }
+          .section-card {
+            padding: clamp(12px, 2.5vw, 16px) !important;
+            margin-bottom: clamp(12px, 3vw, 16px) !important;
+          }
+          .vacancy-card {
+            padding: clamp(10px, 2vw, 12px) !important;
+            font-size: clamp(12px, 2vw, 13px) !important;
+          }
+        }
       `}</style>
 
       {/* NAV */}
       <nav
         style={{
-          padding: "0 32px",
+          padding: "0 clamp(12px, 4vw, 32px)",
           height: 64,
           display: "flex",
           alignItems: "center",
@@ -126,6 +178,7 @@ export default function ProjectDetailClient({
       >
         <button
           onClick={() => router.push("/directorio")}
+          className="nav-button"
           style={{
             background: "rgba(255,255,255,0.05)",
             border: `1px solid ${C.border}`,
@@ -155,13 +208,12 @@ export default function ProjectDetailClient({
       </nav>
 
       <div
+        className="project-container"
         style={{
-          maxWidth: 900,
+          maxWidth: 1200,
           margin: "0 auto",
-          padding: "48px 32px",
-          display: "grid",
-          gridTemplateColumns: "1fr 340px",
-          gap: 32,
+          padding: "clamp(16px, 8vw, 48px) clamp(12px, 4vw, 32px)",
+          width: "100%",
           alignItems: "start",
         }}
       >
@@ -193,6 +245,7 @@ export default function ProjectDetailClient({
             </div>
             <div>
               <h1
+                className="project-title"
                 style={{
                   fontFamily: "Syne,sans-serif",
                   fontWeight: 800,
@@ -245,6 +298,7 @@ export default function ProjectDetailClient({
           </div>
 
           <div
+            className="section-card"
             style={{
               background: C.card,
               border: `1px solid ${C.border}`,
@@ -271,6 +325,7 @@ export default function ProjectDetailClient({
           {/* Vacantes */}
           {vacantesAbiertas.length > 0 && (
             <div
+              className="section-card"
               style={{
                 background: C.card,
                 border: `1px solid ${C.border}`,
@@ -356,6 +411,7 @@ export default function ProjectDetailClient({
 
           {/* Founder */}
           <div
+            className="section-card"
             style={{
               background: C.card,
               border: `1px solid ${C.border}`,
@@ -382,6 +438,7 @@ export default function ProjectDetailClient({
               }}
             >
               <div
+                className="founder-avatar"
                 style={{
                   width: 40,
                   height: 40,
@@ -419,7 +476,7 @@ export default function ProjectDetailClient({
         </div>
 
         {/* Right — Apply panel */}
-        <div style={{ position: "sticky", top: 80 }}>
+        <div className="apply-panel" style={{ position: "sticky", top: 80 }}>
           {isOwner ? (
             <div
               style={{
